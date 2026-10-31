@@ -1,0 +1,227 @@
+
+.settings-main {
+  flex: 1;
+  min-width: 0;
+  padding: 40px;
+}
+
+.settings-header {
+  margin-bottom: 28px;
+}
+
+.settings-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #687587;
+  text-decoration: none;
+  font-size: 13px;
+  margin-bottom: 17px;
+}
+
+.settings-header h1 {
+  font-size: 29px;
+  margin-bottom: 8px;
+  color: #1d2c42;
+}
+
+.settings-header p {
+  color: #858b95;
+  font-size: 14px;
+}
+
+.settings-card {
+  max-width: 900px;
+  background: #fff;
+  border: 1px solid #e9e9e5;
+  border-radius: 12px;
+  padding: 27px 30px;
+  margin-bottom: 22px;
+}
+
+.settings-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 5px;
+}
+
+.settings-heading-icon {
+  width: 43px;
+  height: 43px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #edf1f6;
+  color: #263d5c;
+  border-radius: 8px;
+}
+
+.settings-heading-icon svg {
+  width: 20px;
+}
+
+.settings-card-heading h2 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.settings-card-heading p {
+  color: #858b95;
+  font-size: 12px;
+}
+
+.settings-option {
+  min-height: 78px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 1px solid #f0f0ed;
+}
+
+.settings-option h3 {
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #39465a;
+}
+
+.settings-option p {
+  font-size: 12px;
+  color: #858b95;
+  line-height: 1.5;
+}
+
+.settings-toggle {
+  width: 43px;
+  height: 24px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 20px;
+  background: #d4d7d9;
+  padding: 3px;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.settings-toggle span {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  transition: 0.2s;
+}
+
+.settings-toggle.on {
+  background: #294e70;
+}
+
+.settings-toggle.on span {
+  transform: translateX(19px);
+}
+
+.settings-save-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 22px;
+  border: none;
+  background: #233d5d;
+  color: white;
+  padding: 12px 19px;
+  border-radius: 7px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.settings-save-btn:hover {
+  background: #172d49;
+}
+
+.password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+  padding-top: 18px;
+  max-width: 550px;
+}
+
+.settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.settings-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #39465a;
+}
+
+.settings-field input {
+  height: 44px;
+  width: 100%;
+  padding: 0 13px;
+  border: 1px solid #dedfdf;
+  border-radius: 7px;
+  outline: none;
+  font-size: 13px;
+  color: #263448;
+  background: white;
+}
+
+.settings-field input:focus {
+  border-color: #526b8b;
+}
+
+.settings-message {
+  max-width: 900px;
+  padding: 13px 16px;
+  background: #edf4ef;
+  color: #26734b;
+  border-radius: 7px;
+  font-size: 13px;
+  margin-bottom: 18px;
+}
+
+.settings-bottom {
+  max-width: 900px;
+  display: flex;
+  justify-content: space-between;
+  color: #899197;
+  font-size: 11px;
+  padding: 10px 0;
+}
+
+@media (max-width: 750px) {
+  .settings-main {
+    padding: 25px 15px;
+  }
+
+  .settings-card {
+    padding: 20px;
+  }
+
+  .settings-option {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 420px) {
+  .settings-card-heading {
+    align-items: flex-start;
+  }
+
+  .settings-card-heading h2 {
+    font-size: 16px;
+  }
+
+  .settings-option p {
+    max-width: 210px;
+  }
+}

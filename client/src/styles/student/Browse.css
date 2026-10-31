@@ -1,55 +1,10 @@
-
 .browse-page {
   min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
   background: #F5F5F0;
   color: #172C43;
   font-family: "Inter", sans-serif;
-}
-
-.browse-navbar {
-  height: 75px;
-  padding: 0 6%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: white;
-  border-bottom: 1px solid #e7e9e5;
-}
-
-.browse-logo {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  color: #172C43;
-  font-size: 24px;
-  font-weight: 800;
-  text-decoration: none;
-}
-
-.browse-logo span {
-  color: #D77A48;
-}
-
-.browse-nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 25px;
-}
-
-.browse-nav-actions a {
-  color: #687780;
-  text-decoration: none;
-  font-size: 13px;
-}
-
-.browse-nav-actions .browse-report-btn {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  background: #172C43;
-  color: white;
-  padding: 11px 15px;
-  border-radius: 5px;
 }
 
 .browse-container {
@@ -407,7 +362,7 @@
   margin-bottom: 15px;
 }
 
-.browse-modal > .browse-status {
+.browse-modal>.browse-status {
   margin-bottom: 12px;
 }
 
@@ -416,7 +371,7 @@
   margin: 4px 0 10px;
 }
 
-.browse-modal > p {
+.browse-modal>p {
   color: #829097;
   font-size: 13px;
   line-height: 1.6;
@@ -450,27 +405,6 @@
 }
 
 @media (max-width: 600px) {
-  .browse-navbar {
-    padding: 0 16px;
-    height: 65px;
-  }
-
-  .browse-logo {
-    font-size: 21px;
-  }
-
-  .browse-nav-actions {
-    gap: 12px;
-  }
-
-  .browse-nav-actions a {
-    font-size: 11px;
-  }
-
-  .browse-nav-actions .browse-report-btn {
-    padding: 9px;
-  }
-
   .browse-container {
     padding: 30px 14px 50px;
   }

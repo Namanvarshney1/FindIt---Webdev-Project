@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Package,
@@ -11,7 +11,8 @@ import {
   CheckCircle,
   X
 } from "lucide-react";
-import "../../Report.css";
+import StudentLayout from "../../components/StudentLayout";
+import "../../styles/student/Report.css";
 
 export default function Report() {
   const [type, setType] = useState("Lost");
@@ -28,11 +29,20 @@ export default function Report() {
     contact: ""
   });
 
+  useEffect(() => {
+    return () => {
+      if (preview) {
+        URL.revokeObjectURL(preview);
+      }
+    };
+  }, [preview]);
+
   function handleChange(event) {
-    setForm({
-      ...form,
-      [event.target.name]: event.target.value
-    });
+    const { name, value } = event.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value
+    }));
   }
 
   function handleImage(event) {
@@ -44,6 +54,10 @@ export default function Report() {
       setMessage("Image size must be less than 5 MB.");
       event.target.value = "";
       return;
+    }
+
+    if (preview) {
+      URL.revokeObjectURL(preview);
     }
 
     setImage(file);
@@ -86,22 +100,9 @@ export default function Report() {
   }
 
   return (
-    <div className="report-page">
-
-      {/* NAVBAR */}
-      <header className="report-navbar">
-        <Link to="/" className="report-logo">
-          <Package size={25} />
-          FindIt<span>.</span>
-        </Link>
-
-        <Link to="/dashboard" className="back-dashboard">
-          <ArrowLeft size={17} />
-          Back to Dashboard
-        </Link>
-      </header>
-
-      <main className="report-container">
+    <StudentLayout>
+      <div className="report-page">
+        <main className="report-container">
 
         {/* PAGE HEADING */}
         <div className="report-heading">
@@ -442,6 +443,7 @@ export default function Report() {
           </form>
         </section>
       </main>
-    </div>
+      </div>
+    </StudentLayout>
   );
 }

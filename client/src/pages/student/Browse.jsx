@@ -8,16 +8,16 @@ import {
   MapPin,
   CalendarDays,
   SlidersHorizontal,
-  Plus,
   X
 } from "lucide-react";
+import StudentLayout from "../../components/StudentLayout";
 
 import wallet from "../../assets/wallet.jpg";
 import headphones from "../../assets/headphones.jpg";
 import notebook from "../../assets/notebook.jpg";
 import smartwatch from "../../assets/smartwatch.jpg";
 
-import "../../Browse.css";
+import "../../styles/student/Browse.css";
 
 const items = [
   {
@@ -62,6 +62,14 @@ const items = [
   }
 ];
 
+function formatDate(date) {
+  return new Date(`${date}T00:00:00`).toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric"
+  });
+}
+
 export default function Browse() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All Categories");
@@ -96,32 +104,10 @@ export default function Browse() {
     setLocation("All Locations");
   }
 
-  function formatDate(date) {
-    return new Date(`${date}T00:00:00`).toLocaleDateString("en-IN", {
-      day: "numeric",
-      month: "short",
-      year: "numeric"
-    });
-  }
-
   return (
-    <div className="browse-page">
-
-      <header className="browse-navbar">
-        <Link to="/" className="browse-logo">
-          <Package size={25} />
-          FindIt<span>.</span>
-        </Link>
-
-        <div className="browse-nav-actions">
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/report" className="browse-report-btn">
-            <Plus size={17} /> Report Item
-          </Link>
-        </div>
-      </header>
-
-      <main className="browse-container">
+    <StudentLayout>
+      <div className="browse-page">
+        <main className="browse-container">
 
         <div className="browse-heading">
           <Link to="/" className="browse-back">
@@ -346,6 +332,7 @@ export default function Browse() {
         </div>
       )}
 
-    </div>
+      </div>
+    </StudentLayout>
   );
 }

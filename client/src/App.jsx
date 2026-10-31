@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
   Search,
@@ -10,7 +10,6 @@ import {
   Smartphone,
   Wallet,
   Watch,
-  Headphones,
   Package
 } from "lucide-react";
 
@@ -25,8 +24,20 @@ import Register from "./pages/student/Register";
 import Dashboard from "./pages/student/Dashboard";
 import Report from "./pages/student/Report";
 import Browse from "./pages/student/Browse";
+import MyClaims from "./pages/student/MyClaims";
+import Profile from "./pages/student/Profile";
+import AdminUsers from "./pages/Admin/AdminUsers";
+import AdminClaims from "./pages/Admin/AdminClaims";
+import AdminItems from "./pages/Admin/AdminItems";
+import Settings from "./pages/student/Settings";
+import AdminAnalytics from "./pages/Admin/AdminAnalytics";
+import AdminSettings from "./pages/Admin/AdminSettings";
+import ForgotPassword from "./pages/student/ForgotPassword";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+import AdminLogin from "./pages/Admin/AdminLogin";
+import MyReports from "./pages/student/MyReports";
 
-import "./App.css";
+import "./styles/App.css";
 
 const categories = [
   { name: "All Items", icon: Package },
@@ -79,17 +90,19 @@ function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState("All Items");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredItems = items.filter((item) => {
-    const matchesCategory =
-      selectedCategory === "All Items" ||
-      item.category === selectedCategory;
+  const filteredItems = useMemo(() => {
+    return items.filter((item) => {
+      const matchesCategory =
+        selectedCategory === "All Items" ||
+        item.category === selectedCategory;
 
-    const matchesSearch =
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.location.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch =
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.location.toLowerCase().includes(searchTerm.toLowerCase());
 
-    return matchesCategory && matchesSearch;
-  });
+      return matchesCategory && matchesSearch;
+    });
+  }, [selectedCategory, searchTerm]);
 
   return (
     <div className="app">
@@ -312,7 +325,19 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/report" element={<Report />} />
+        <Route path="/my-reports" element={<MyReports />} />
+        <Route path="/my-claims" element={<MyClaims />} />
+        <Route path="/admin/items" element={<AdminItems />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/claims" element={<AdminClaims />} />
         <Route path="/browse" element={<Browse />} />
+        <Route path="/admin/settings" element={<AdminSettings />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/admin/analytics" element={<AdminAnalytics />} />
+        <Route path="/admin/users" element={<AdminUsers />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>

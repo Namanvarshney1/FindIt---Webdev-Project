@@ -1,23 +1,17 @@
 
-import { useState } from "react";
 import {
-  LayoutDashboard,
   Search,
   FileText,
   MessageSquare,
-  User,
-  Settings,
-  LogOut,
   Plus,
   MapPin,
   Clock,
   ArrowRight,
-  Package,
-  Menu,
-  X
+  Package
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import "../../Dashboard.css";
+import StudentLayout from "../../components/StudentLayout";
+import "../../styles/student/Dashboard.css";
 
 const recentReports = [
   {
@@ -59,67 +53,10 @@ const matches = [
 ];
 
 export default function Dashboard() {
-  const [menuOpen, setMenuOpen] = useState(false);
-
   return (
-    <div className="dashboard-layout">
-
-      <aside className={`dashboard-sidebar ${menuOpen ? "show" : ""}`}>
-        <div className="dashboard-logo">
-          <Package size={25} />
-          <span>FindIt<span className="logo-dot">.</span></span>
-          <button className="close-menu" onClick={() => setMenuOpen(false)}>
-            <X size={20} />
-          </button>
-        </div>
-
-        <p className="sidebar-label">MENU</p>
-
-        <nav className="sidebar-nav">
-          <Link to="/dashboard" className="sidebar-link active">
-            <LayoutDashboard size={19} /> Dashboard
-          </Link>
-          <Link to="/browse" className="sidebar-link">
-            <Search size={19} /> Browse Items
-          </Link>
-          <Link to="/my-reports" className="sidebar-link">
-            <FileText size={19} /> My Reports
-          </Link>
-          <Link to="/my-claims" className="sidebar-link">
-            <MessageSquare size={19} /> My Claims
-          </Link>
-        </nav>
-
-        <p className="sidebar-label account-label">ACCOUNT</p>
-
-        <nav className="sidebar-nav">
-          <Link to="/profile" className="sidebar-link">
-            <User size={19} /> My Profile
-          </Link>
-          <Link to="/settings" className="sidebar-link">
-            <Settings size={19} /> Settings
-          </Link>
-        </nav>
-
-        <div className="sidebar-bottom">
-          <div className="student-mini-profile">
-            <div className="profile-avatar">S</div>
-            <div>
-              <strong>Student User</strong>
-              <span>Student Account</span>
-            </div>
-          </div>
-          <Link to="/login" className="sidebar-link logout-link">
-            <LogOut size={19} /> Log Out
-          </Link>
-        </div>
-      </aside>
-
+    <StudentLayout>
       <main className="dashboard-main">
         <header className="dashboard-header">
-          <button className="menu-toggle" onClick={() => setMenuOpen(true)}>
-            <Menu size={23} />
-          </button>
           <div>
             <span className="dashboard-date">FRIDAY, 30 OCTOBER 2026</span>
             <h2>Student Dashboard</h2>
@@ -181,8 +118,8 @@ export default function Dashboard() {
             </div>
 
             <div className="report-list">
-              {recentReports.map((report, index) => (
-                <div className="report-row" key={index}>
+              {recentReports.map((report) => (
+                <div className="report-row" key={`${report.name}-${report.date}`}>
                   <div className="report-item-icon">
                     <Package size={21} />
                   </div>
@@ -211,8 +148,8 @@ export default function Dashboard() {
               <Search size={19} />
             </div>
 
-            {matches.map((item, index) => (
-              <div className="match-card" key={index}>
+            {matches.map((item) => (
+              <div className="match-card" key={`${item.name}-${item.location}`}>
                 <div className="match-top">
                   <strong>{item.name}</strong>
                   <span>{item.match}</span>
@@ -262,6 +199,6 @@ export default function Dashboard() {
         </section>
 
       </main>
-    </div>
+    </StudentLayout>
   );
 }
