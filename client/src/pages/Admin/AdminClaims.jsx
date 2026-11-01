@@ -1,10 +1,7 @@
 
-import { useState, useMemo } from "react";
-import { Link } from "react-router-dom";
-import {
-  LayoutDashboard, Package, ShieldCheck, Users, BarChart3,
-  Settings, LogOut, Search, Check, X, Eye
-} from "lucide-react";
+import { useState, useMemo, useEffect } from "react";
+import { Search, Check, X, Eye } from "lucide-react";
+import AdminLayout from "../../components/AdminLayout";
 import "../../styles/admin/AdminClaims.css";
 
 const initialClaims = [
@@ -50,22 +47,58 @@ const initialClaims = [
   }
 ];
 
+// Load claims saved in the browser
+const getSavedClaims = () => {
+  try {
+    const savedClaims = localStorage.getItem("findit_admin_claims");
+
+    if (savedClaims !== null) {
+      const parsedClaims = JSON.parse(savedClaims);
+
+      return Array.isArray(parsedClaims)
+        ? parsedClaims
+        : initialClaims;
+    }
+
+    return initialClaims;
+  } catch {
+    return initialClaims;
+  }
+};
+
 function AdminClaims() {
-  const [claims, setClaims] = useState(initialClaims);
+  const [claims, setClaims] = useState(getSavedClaims);
+
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
   const [selectedClaim, setSelectedClaim] = useState(null);
 
+  // Automatically save changes to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        "findit_admin_claims",
+        JSON.stringify(claims)
+      );
+    } catch {
+      console.error("Unable to save admin claims.");
+    }
+  }, [claims]);
+
+  // Update claim status
   const updateStatus = (id, status) => {
     setClaims(prev =>
       prev.map(claim =>
-        claim.id === id ? { ...claim, status } : claim
+        claim.id === id
+          ? { ...claim, status }
+          : claim
       )
     );
 
     setSelectedClaim(null);
   };
 
+  // Statistics
   const claimStats = useMemo(() => ({
     total: claims.length,
     pending: claims.filter(c => c.status === "Pending").length,
@@ -73,14 +106,16 @@ function AdminClaims() {
     rejected: claims.filter(c => c.status === "Rejected").length
   }), [claims]);
 
+  // Search and filters
   const filteredClaims = useMemo(() => {
-    const searchText = search.toLowerCase();
+    const searchText = search.trim().toLowerCase();
 
     return claims.filter(claim => {
       const matchesSearch =
-        claim.student.toLowerCase().includes(searchText) ||
-        claim.item.toLowerCase().includes(searchText) ||
-        claim.studentId.toLowerCase().includes(searchText);
+        (claim.student || "").toLowerCase().includes(searchText) ||
+        (claim.item || "").toLowerCase().includes(searchText) ||
+        (claim.studentId || "").toLowerCase().includes(searchText) ||
+        (claim.location || "").toLowerCase().includes(searchText);
 
       const matchesStatus =
         statusFilter === "All" || claim.status === statusFilter;
@@ -90,37 +125,10 @@ function AdminClaims() {
   }, [claims, search, statusFilter]);
 
   return (
-    <div className="admin-claims-layout">
-
-      <aside className="admin-claims-sidebar">
-        <div className="admin-claims-brand">Find<span>It.</span></div>
-
-        <div className="admin-claims-user">
-          <div className="admin-claims-avatar">A</div>
-          <div>
-            <h3>Administrator</h3>
-            <p>Admin Account</p>
-          </div>
-        </div>
-
-        <div className="admin-claims-nav-label">MAIN MENU</div>
-
-        <nav className="admin-claims-nav">
-          <Link to="/admin/dashboard"><LayoutDashboard /> Overview</Link>
-          <Link to="/admin/items"><Package /> Manage Items</Link>
-          <Link to="/admin/claims" className="active"><ShieldCheck /> Manage Claims</Link>
-          <Link to="/admin/users"><Users /> Students</Link>
-          <Link to="/admin/analytics"><BarChart3 /> Analytics</Link>
-          <Link to="/admin/settings"><Settings /> Settings</Link>
-        </nav>
-
-        <Link to="/" className="admin-claims-logout">
-          <LogOut /> Back to Home
-        </Link>
-      </aside>
-
+    <AdminLayout>
       <main className="admin-claims-main">
 
+        {/* PAGE HEADER */}
         <header className="admin-claims-header">
           <span>ADMINISTRATION</span>
           <h1>Manage Claims</h1>
@@ -129,22 +137,27 @@ function AdminClaims() {
 
         {/* STATISTICS */}
         <section className="admin-claims-stats">
+
           <div>
             <span>Total Claims</span>
             <h2>{claimStats.total}</h2>
           </div>
+
           <div>
             <span>Pending</span>
             <h2>{claimStats.pending}</h2>
           </div>
+
           <div>
             <span>Approved</span>
             <h2>{claimStats.approved}</h2>
           </div>
+
           <div>
             <span>Rejected</span>
             <h2>{claimStats.rejected}</h2>
           </div>
+
         </section>
 
         {/* CLAIMS TABLE */}
@@ -157,9 +170,12 @@ function AdminClaims() {
             </div>
           </div>
 
+          {/* SEARCH AND FILTERS */}
           <div className="admin-claims-filters">
+
             <div className="admin-claims-search">
               <Search size={18} />
+
               <input
                 placeholder="Search student, ID or item..."
                 value={search}
@@ -177,10 +193,14 @@ function AdminClaims() {
               <option value="Approved">Approved</option>
               <option value="Rejected">Rejected</option>
             </select>
+
           </div>
 
+          {/* TABLE */}
           <div className="admin-claims-table-wrapper">
+
             <table className="admin-claims-table">
+
               <thead>
                 <tr>
                   <th>STUDENT</th>
@@ -192,14 +212,17 @@ function AdminClaims() {
               </thead>
 
               <tbody>
+
                 {filteredClaims.map(claim => (
                   <tr key={claim.id}>
+
                     <td>
                       <strong>{claim.student}</strong>
                       <small>{claim.studentId}</small>
                     </td>
 
                     <td>{claim.item}</td>
+
                     <td>{claim.date}</td>
 
                     <td>
@@ -210,9 +233,12 @@ function AdminClaims() {
 
                     <td>
                       <div className="admin-claim-actions">
+
                         <button
+                          type="button"
                           className="admin-claim-view"
                           title="View details"
+                          aria-label={`View claim by ${claim.student}`}
                           onClick={() => setSelectedClaim(claim)}
                         >
                           <Eye size={16} />
@@ -221,6 +247,7 @@ function AdminClaims() {
                         {claim.status === "Pending" && (
                           <>
                             <button
+                              type="button"
                               className="admin-claim-approve"
                               title="Approve"
                               onClick={() => updateStatus(claim.id, "Approved")}
@@ -229,6 +256,7 @@ function AdminClaims() {
                             </button>
 
                             <button
+                              type="button"
                               className="admin-claim-reject"
                               title="Reject"
                               onClick={() => updateStatus(claim.id, "Rejected")}
@@ -237,8 +265,10 @@ function AdminClaims() {
                             </button>
                           </>
                         )}
+
                       </div>
                     </td>
+
                   </tr>
                 ))}
 
@@ -249,13 +279,16 @@ function AdminClaims() {
                     </td>
                   </tr>
                 )}
+
               </tbody>
             </table>
+
           </div>
 
           <div className="admin-claims-footer-count">
             Showing {filteredClaims.length} of {claims.length} claims
           </div>
+
         </section>
 
         {/* CLAIM DETAILS MODAL */}
@@ -266,17 +299,29 @@ function AdminClaims() {
           >
             <div
               className="admin-claim-modal"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="admin-claim-title"
               onClick={e => e.stopPropagation()}
             >
+
               <div className="admin-claim-modal-heading">
+
                 <div>
                   <span>CLAIM DETAILS</span>
-                  <h2>{selectedClaim.item}</h2>
+                  <h2 id="admin-claim-title">
+                    {selectedClaim.item}
+                  </h2>
                 </div>
 
-                <button onClick={() => setSelectedClaim(null)}>
+                <button
+                  type="button"
+                  onClick={() => setSelectedClaim(null)}
+                  aria-label="Close claim details"
+                >
                   <X size={20} />
                 </button>
+
               </div>
 
               <div className="admin-claim-detail-row">
@@ -299,43 +344,60 @@ function AdminClaims() {
                 <strong>{selectedClaim.date}</strong>
               </div>
 
+              <div className="admin-claim-detail-row">
+                <span>Current Status</span>
+                <strong>{selectedClaim.status}</strong>
+              </div>
+
               <div className="admin-claim-reason">
                 <h3>Claim Reason</h3>
                 <p>{selectedClaim.reason}</p>
               </div>
 
               <div className="admin-claim-modal-actions">
+
                 {selectedClaim.status === "Pending" ? (
                   <>
                     <button
+                      type="button"
                       className="admin-claim-approve"
-                      onClick={() => updateStatus(selectedClaim.id, "Approved")}
+                      onClick={() =>
+                        updateStatus(selectedClaim.id, "Approved")
+                      }
                     >
-                      <Check size={16} /> Approve Claim
+                      <Check size={16} />
+                      Approve Claim
                     </button>
 
                     <button
+                      type="button"
                       className="admin-claim-reject"
-                      onClick={() => updateStatus(selectedClaim.id, "Rejected")}
+                      onClick={() =>
+                        updateStatus(selectedClaim.id, "Rejected")
+                      }
                     >
-                      <X size={16} /> Reject Claim
+                      <X size={16} />
+                      Reject Claim
                     </button>
                   </>
                 ) : (
                   <p>Current status: {selectedClaim.status}</p>
                 )}
+
               </div>
+
             </div>
           </div>
         )}
 
+        {/* FOOTER */}
         <footer className="admin-claims-bottom">
           <span>FindIt. Administration Panel</span>
           <span>Version 1.0</span>
         </footer>
 
       </main>
-    </div>
+    </AdminLayout>
   );
 }
 

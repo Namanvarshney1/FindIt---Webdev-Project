@@ -1,33 +1,52 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, ArrowRight, Package } from "lucide-react";
 import "../../styles/student/Auth.css";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError("");
+
+    setMessage("");
+    setMessageType("");
 
     if (!email.trim() || !password.trim()) {
-      setError("Please fill in all fields.");
+      setMessage("Please enter both email and password.");
+      setMessageType("error");
       return;
     }
 
-    setError("Login UI is ready. Backend authentication will be connected next.");
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email.trim())) {
+      setMessage("Please enter a valid email address.");
+      setMessageType("error");
+      return;
+    }
+
+    setMessage("Enter valid details.");
+    setMessageType("error");
+  };
+
+  const clearMessage = () => {
+    setMessage("");
+    setMessageType("");
   };
 
   return (
     <div className="auth-page">
 
       <header className="auth-navbar">
-        <Link to="/" className="logo">
-          find<span>it.</span>
+        <Link to="/" className="auth-logo">
+          <Package size={27} />
+          <span>FindIt<span className="auth-logo-dot">.</span></span>
         </Link>
 
         <Link to="/" className="back-link">
@@ -47,27 +66,35 @@ export default function Login() {
             Sign in to manage your reports and find your belongings.
           </p>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} noValidate>
 
-            <label>College Email</label>
+            <label htmlFor="login-email">College Email</label>
 
             <input
+              id="login-email"
               type="email"
               placeholder="you@college.edu"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              onChange={(e) => {
+                setEmail(e.target.value);
+                clearMessage();
+              }}
+              autoComplete="email"
             />
 
-            <label>Password</label>
+            <label htmlFor="login-password">Password</label>
 
             <div className="password-field">
               <input
+                id="login-password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  clearMessage();
+                }}
+                autoComplete="current-password"
               />
 
               <button
@@ -90,7 +117,11 @@ export default function Login() {
               </Link>
             </div>
 
-            {error && <p className="auth-message">{error}</p>}
+            {message && (
+              <div className={`auth-message ${messageType}`} role="alert">
+                {message}
+              </div>
+            )}
 
             <button type="submit" className="auth-submit">
               Sign In <ArrowRight size={17} />
@@ -108,7 +139,9 @@ export default function Login() {
         <div className="auth-side">
 
           <div>
-            <span className="eyebrow">FINDIT · YOUR CAMPUS COMMUNITY</span>
+            <span className="eyebrow">
+              FINDIT · YOUR CAMPUS COMMUNITY
+            </span>
 
             <h2>
               Every lost item
@@ -131,7 +164,6 @@ export default function Login() {
         </div>
 
       </main>
-
     </div>
   );
 }

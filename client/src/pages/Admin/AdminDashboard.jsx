@@ -1,10 +1,10 @@
 
 import { Link } from "react-router-dom";
 import {
-  LayoutDashboard, Package, Search, ShieldCheck, Users,
-  BarChart3, Settings, LogOut, Bell, ArrowUpRight,
-  Clock, CheckCircle, Eye
+  Package, Search, ShieldCheck, Users,
+  Bell, ArrowUpRight, Clock, CheckCircle, Eye
 } from "lucide-react";
+import AdminLayout from "../../components/AdminLayout";
 import "../../styles/admin/AdminDashboard.css";
 
 const stats = [
@@ -29,47 +29,7 @@ const claims = [
 
 function AdminDashboard() {
   return (
-    <div className="admin-dashboard-layout">
-
-      <aside className="admin-dashboard-sidebar">
-        <div className="admin-dashboard-brand">Find<span>It.</span></div>
-
-        <div className="admin-dashboard-user">
-          <div className="admin-dashboard-avatar">A</div>
-          <div>
-            <h3>Administrator</h3>
-            <p>Admin Account</p>
-          </div>
-        </div>
-
-        <div className="admin-nav-label">MAIN MENU</div>
-
-        <nav className="admin-dashboard-nav">
-          <Link to="/admin/dashboard" className="active">
-            <LayoutDashboard /> Overview
-          </Link>
-          <Link to="/admin/items">
-            <Package /> Manage Items
-          </Link>
-          <Link to="/admin/claims">
-            <ShieldCheck /> Manage Claims
-          </Link>
-          <Link to="/admin/users">
-            <Users /> Students
-          </Link>
-          <Link to="/admin/analytics">
-            <BarChart3 /> Analytics
-          </Link>
-          <Link to="/admin/settings">
-            <Settings /> Settings
-          </Link>
-        </nav>
-
-        <Link to="/" className="admin-dashboard-logout">
-          <LogOut /> Back to Home
-        </Link>
-      </aside>
-
+    <AdminLayout>
       <main className="admin-dashboard-main">
 
         <header className="admin-dashboard-header">
@@ -226,7 +186,7 @@ function AdminDashboard() {
         </footer>
 
       </main>
-    </div>
+    </AdminLayout>
   );
 }
 

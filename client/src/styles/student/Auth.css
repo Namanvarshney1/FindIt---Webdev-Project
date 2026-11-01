@@ -1,8 +1,17 @@
 
+/* ========================================
+   AUTHENTICATION PAGE
+======================================== */
+
 .auth-page {
   min-height: 100vh;
   background: #f5f5f0;
+  color: #172c43;
 }
+
+/* ========================================
+   NAVBAR
+======================================== */
 
 .auth-navbar {
   height: 75px;
@@ -13,10 +22,42 @@
   border-bottom: 1px solid #e3e3dc;
 }
 
+/* FINDIT LOGO */
+
+.auth-navbar .auth-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #172c43;
+  font-family: "DM Sans", sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  text-decoration: none;
+}
+
+.auth-navbar .auth-logo svg {
+  color: #172c43;
+  flex-shrink: 0;
+}
+
+.auth-navbar .auth-logo-dot {
+  color: #d77a48;
+}
+
 .back-link {
   font-size: 13px;
   color: #526273;
+  text-decoration: none;
 }
+
+.back-link:hover {
+  color: #d77a48;
+}
+
+/* ========================================
+   AUTHENTICATION CONTAINER
+======================================== */
 
 .auth-container {
   width: 84%;
@@ -28,15 +69,26 @@
   border: 1px solid #e7e7e0;
 }
 
+/* ========================================
+   FORM SECTION
+======================================== */
+
 .auth-form-section {
   padding: 55px 65px;
 }
 
+.auth-form-section .eyebrow {
+  font-size: 13px;
+  color: #172c43;
+  font-weight: 500;
+}
+
 .auth-form-section h1 {
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 35px;
   letter-spacing: -1.2px;
   margin-bottom: 12px;
+  color: #172c43;
 }
 
 .auth-subtitle {
@@ -45,6 +97,10 @@
   line-height: 1.8;
   margin-bottom: 30px;
 }
+
+/* ========================================
+   FORM INPUTS
+======================================== */
 
 .auth-form-section form {
   display: flex;
@@ -55,6 +111,7 @@
   font-size: 12px;
   font-weight: 600;
   margin: 15px 0 8px;
+  color: #172c43;
 }
 
 .auth-form-section input,
@@ -65,18 +122,30 @@
   background: #fbfbf8;
   padding: 0 13px;
   outline: none;
+  font-family: inherit;
   font-size: 12px;
   color: #172c43;
   border-radius: 3px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-form-section input::placeholder {
+  color: #75818a;
 }
 
 .auth-form-section input:focus,
 .auth-form-section select:focus {
-  border-color: #172c43;
+  border-color: #d77a48;
+  box-shadow: 0 0 0 3px rgba(215, 122, 72, 0.10);
 }
+
+/* ========================================
+   PASSWORD FIELD
+======================================== */
 
 .password-field {
   position: relative;
+  width: 100%;
 }
 
 .password-field input {
@@ -92,7 +161,19 @@
   background: transparent;
   color: #75818a;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
 }
+
+.password-field button:hover {
+  color: #d77a48;
+}
+
+/* ========================================
+   REMEMBER ME AND FORGOT PASSWORD
+======================================== */
 
 .auth-options {
   display: flex;
@@ -106,18 +187,66 @@
   display: flex;
   align-items: center;
   gap: 7px;
+  color: #526273;
+  cursor: pointer;
 }
 
-.remember-option input {
+.auth-form-section .remember-option input {
   width: 14px;
   height: 14px;
+  margin: 0;
+  accent-color: #172c43;
+  cursor: pointer;
 }
 
 .auth-options a,
 .auth-switch a {
   color: #d77a48;
   font-weight: 600;
+  text-decoration: none;
 }
+
+.auth-options a:hover,
+.auth-switch a:hover {
+  color: #b85f35;
+}
+
+/* ========================================
+   VALIDATION MESSAGES
+======================================== */
+
+.auth-message {
+  width: 100%;
+  padding: 12px 14px;
+  margin-top: 12px;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 12px;
+  line-height: 1.6;
+  font-weight: 500;
+  border: 1px solid transparent;
+}
+
+/* Error message */
+
+.auth-message.error {
+  color: #a64e32;
+  background: #fff3ed;
+  border-color: #f1d1c3;
+}
+
+/* Informational message */
+
+.auth-message.info {
+  color: #294b6b;
+  background: #edf4fa;
+  border-color: #d1e1ef;
+}
+
+/* ========================================
+   SIGN IN BUTTON
+======================================== */
 
 .auth-submit {
   width: 100%;
@@ -134,20 +263,21 @@
   font-weight: 600;
   cursor: pointer;
   margin-top: 20px;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .auth-submit:hover {
   background: #29435e;
+  transform: translateY(-1px);
 }
 
-.auth-message {
-  font-size: 12px;
-  line-height: 1.6;
-  color: #a65a36;
-  background: #fbf0e9;
-  padding: 10px;
-  margin-top: 15px;
+.auth-submit:active {
+  transform: translateY(0);
 }
+
+/* ========================================
+   CREATE ACCOUNT LINK
+======================================== */
 
 .auth-switch {
   text-align: center;
@@ -155,6 +285,10 @@
   color: #75818a;
   margin-top: 25px;
 }
+
+/* ========================================
+   RIGHT SIDE PANEL
+======================================== */
 
 .auth-side {
   background: #172c43;
@@ -168,14 +302,16 @@
 
 .auth-side .eyebrow {
   color: #e59a6d;
+  font-size: 13px;
 }
 
 .auth-side h2 {
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 39px;
   line-height: 1.25;
   letter-spacing: -1.5px;
   margin: 25px 0;
+  color: #fff;
 }
 
 .auth-side p {
@@ -189,6 +325,10 @@
   font-size: 11px;
   color: #bdc8d1;
 }
+
+/* ========================================
+   TABLET RESPONSIVENESS
+======================================== */
 
 @media (max-width: 800px) {
   .auth-container {
@@ -207,9 +347,17 @@
   }
 }
 
+/* ========================================
+   MOBILE RESPONSIVENESS
+======================================== */
+
 @media (max-width: 480px) {
   .auth-navbar {
     padding: 0 5%;
+  }
+
+  .auth-navbar .auth-logo {
+    font-size: 25px;
   }
 
   .auth-form-section h1 {
@@ -219,4 +367,23 @@
   .auth-side h2 {
     font-size: 30px;
   }
+
+  .auth-options {
+    font-size: 10px;
+  }
+
+  .auth-message {
+    font-size: 11px;
+  }
+}
+/* Hide browser's default password reveal icon */
+.password-field input::-ms-reveal,
+.password-field input::-ms-clear {
+  display: none;
+}
+
+/* Hide browser credential controls where supported */
+.password-field input::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  pointer-events: none;
 }

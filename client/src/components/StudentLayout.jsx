@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import {
@@ -12,13 +13,21 @@ import {
   Menu,
   X
 } from "lucide-react";
+
+import { useProfile } from "../context/useProfile";
 import "../styles/components/StudentLayout.css";
 
 export default function StudentLayout({ children }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const { profile, profileImage } = useProfile("student");
+
+  const avatarLetter =
+    profile.name?.trim().charAt(0).toUpperCase() || "S";
+
   return (
     <div className="student-layout">
+
       {/* Mobile Top Bar */}
       <header className="student-mobile-header">
         <button
@@ -44,10 +53,15 @@ export default function StudentLayout({ children }) {
         />
       )}
 
-      {/* Reusable Student Sidebar */}
+      {/* Student Sidebar */}
       <aside className={`student-sidebar ${menuOpen ? "open" : ""}`}>
+
         <div className="student-sidebar-top">
-          <Link to="/" className="student-brand" onClick={() => setMenuOpen(false)}>
+          <Link
+            to="/"
+            className="student-brand"
+            onClick={() => setMenuOpen(false)}
+          >
             Find<span>It.</span>
           </Link>
 
@@ -61,15 +75,30 @@ export default function StudentLayout({ children }) {
           </button>
         </div>
 
+        {/* Dynamic Student Profile */}
         <div className="student-user">
-          <div className="student-avatar">S</div>
-          <div>
-            <h3>Student User</h3>
+
+          <div className="student-avatar">
+            {profileImage ? (
+              <img
+                src={profileImage}
+                alt="Student profile"
+              />
+            ) : (
+              avatarLetter
+            )}
+          </div>
+
+          <div className="student-user-details">
+            <h3>{profile.name || "Student User"}</h3>
             <p>Student Account</p>
           </div>
+
         </div>
 
+        {/* Navigation */}
         <nav className="student-nav">
+
           <NavLink
             to="/dashboard"
             onClick={() => setMenuOpen(false)}
@@ -125,8 +154,10 @@ export default function StudentLayout({ children }) {
           >
             <Settings size={18} /> Settings
           </NavLink>
+
         </nav>
 
+        {/* Back to Home */}
         <Link
           to="/"
           className="student-logout"
@@ -134,13 +165,14 @@ export default function StudentLayout({ children }) {
         >
           <LogOut size={18} /> Back to Home
         </Link>
+
       </aside>
 
       {/* Main Page Content */}
       <div className="student-content-area">
         {children}
       </div>
+
     </div>
   );
 }
-

@@ -1,99 +1,124 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Mail, CheckCircle, KeyRound } from "lucide-react";
+import { ArrowLeft, KeyRound, Mail, Package } from "lucide-react";
 import "../../styles/student/ForgotPassword.css";
+import "../../styles/student/Auth.css";
 
-function ForgotPassword() {
+export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [messageType, setMessageType] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    setMessage("");
+    setMessageType("");
+
     if (!email.trim()) {
-      setMessage("Please enter your registered email address.");
+      setMessage("Please enter your college email address.");
+      setMessageType("error");
       return;
     }
 
-    setSubmitted(true);
-    setMessage("Password reset functionality will be available after backend integration.");
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email.trim())) {
+      setMessage("Please enter a valid email address.");
+      setMessageType("error");
+      return;
+    }
+
+    setMessage("Password reset will be available after backend integration.");
+    setMessageType("info");
+  };
+
+  const clearMessage = () => {
+    setMessage("");
+    setMessageType("");
   };
 
   return (
-    <div className="forgot-password-page">
-      <div className="forgot-password-card">
+    <div className="forgot-page">
 
-        <Link to="/login" className="forgot-back-link">
-          <ArrowLeft size={17} /> Back to Login
+      <div className="forgot-card">
+
+        {/* BACK TO LOGIN */}
+        <Link to="/login" className="forgot-back">
+          <ArrowLeft size={16} />
+          Back to Login
         </Link>
 
-        <div className="forgot-brand">
-          Find<span>It.</span>
-        </div>
+        {/* FINDIT LOGO */}
+        <Link to="/" className="forgot-logo">
+          <Package size={25} />
+          <span>
+            FindIt<span className="forgot-logo-dot">.</span>
+          </span>
+        </Link>
 
+        {/* ICON */}
         <div className="forgot-icon">
-          {submitted ? <CheckCircle size={28} /> : <KeyRound size={28} />}
+          <KeyRound size={27} />
         </div>
 
-        <h1>{submitted ? "Request Received" : "Forgot Password?"}</h1>
+        {/* HEADING */}
+        <h1>Forgot Password?</h1>
 
         <p className="forgot-description">
-          {submitted
-            ? "Your request has been recorded in this demo."
-            : "Enter your registered college email address to reset your password."}
+          Enter your registered college email address to reset your
+          password.
         </p>
 
-        {!submitted ? (
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="forgot-email">College Email Address</label>
+        {/* FORM */}
+        <form onSubmit={handleSubmit} noValidate>
 
-            <div className="forgot-input-wrapper">
-              <Mail size={18} />
-              <input
-                id="forgot-email"
-                type="email"
-                placeholder="Enter your email address"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  setMessage("");
-                }}
-                required
-              />
-            </div>
+          <label htmlFor="forgot-email">
+            College Email Address
+          </label>
 
-            <button type="submit" className="forgot-submit-btn">
-              Send Reset Link
-            </button>
-          </form>
-        ) : (
-          <button
-            className="forgot-submit-btn"
-            onClick={() => {
-              setSubmitted(false);
-              setEmail("");
-              setMessage("");
-            }}
-          >
-            Try Another Email
-          </button>
-        )}
+          <div className="forgot-input">
+            <Mail size={18} />
 
-        {message && (
-          <div className="forgot-message">
-            {message}
+            <input
+              id="forgot-email"
+              type="email"
+              placeholder="Enter your email address"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                clearMessage();
+              }}
+              autoComplete="email"
+            />
           </div>
-        )}
 
-        <div className="forgot-login-link">
-          Remember your password? <Link to="/login">Login</Link>
-        </div>
+          {/* VALIDATION MESSAGE */}
+          {message && (
+            <div
+              className={`auth-message ${messageType}`}
+              role="alert"
+            >
+              {message}
+            </div>
+          )}
+
+          {/* SUBMIT BUTTON */}
+          <button type="submit" className="forgot-submit">
+            Send Reset Link
+          </button>
+
+        </form>
+
+        {/* LOGIN LINK */}
+        <p className="forgot-footer">
+          Remember your password?
+          <Link to="/login"> Login</Link>
+        </p>
 
       </div>
+
     </div>
   );
 }
-
-export default ForgotPassword;

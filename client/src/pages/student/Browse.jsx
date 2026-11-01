@@ -78,24 +78,28 @@ export default function Browse() {
   const [selectedItem, setSelectedItem] = useState(null);
 
   const filteredItems = useMemo(() => {
-    return items.filter((item) => {
-      const searchMatch =
-        item.name.toLowerCase().includes(search.toLowerCase()) ||
-        item.location.toLowerCase().includes(search.toLowerCase()) ||
-        item.description.toLowerCase().includes(search.toLowerCase());
+  return items.filter((item) => {
+    const searchTerm = search.trim().toLowerCase();
 
-      const categoryMatch =
-        category === "All Categories" || item.category === category;
+    const searchMatch =
+      (item.name || "").toLowerCase().includes(searchTerm) ||
+      (item.location || "").toLowerCase().includes(searchTerm) ||
+      (item.description || "").toLowerCase().includes(searchTerm) ||
+      (item.category || "").toLowerCase().includes(searchTerm) ||
+      (item.status || "").toLowerCase().includes(searchTerm);
 
-      const statusMatch =
-        status === "All" || item.status === status;
+    const categoryMatch =
+      category === "All Categories" || item.category === category;
 
-      const locationMatch =
-        location === "All Locations" || item.location === location;
+    const statusMatch =
+      status === "All" || item.status === status;
 
-      return searchMatch && categoryMatch && statusMatch && locationMatch;
-    });
-  }, [search, category, status, location]);
+    const locationMatch =
+      location === "All Locations" || item.location === location;
+
+    return searchMatch && categoryMatch && statusMatch && locationMatch;
+  });
+}, [search, category, status, location]);
 
   function clearFilters() {
     setSearch("");

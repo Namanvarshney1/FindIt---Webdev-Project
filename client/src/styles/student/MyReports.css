@@ -1,4 +1,8 @@
 
+/* =========================================
+   MY REPORTS PAGE
+========================================= */
+
 .my-reports-page {
   min-height: 100vh;
   width: 100%;
@@ -13,6 +17,10 @@
   margin: auto;
   padding: 45px 24px 70px;
 }
+
+/* =========================================
+   PAGE HEADING
+========================================= */
 
 .my-reports-heading {
   margin-bottom: 28px;
@@ -34,6 +42,10 @@
   color: #829097;
   font-size: 13px;
 }
+
+/* =========================================
+   SUMMARY CARDS
+========================================= */
 
 .my-reports-summary {
   display: grid;
@@ -67,6 +79,10 @@
   font-size: 23px;
   margin-top: 5px;
 }
+
+/* =========================================
+   REPORTS PANEL
+========================================= */
 
 .my-reports-panel {
   background: white;
@@ -105,7 +121,16 @@
   text-decoration: none;
   font-size: 11px;
   white-space: nowrap;
+  transition: 0.2s;
 }
+
+.my-reports-panel-heading > a:hover {
+  background: #284766;
+}
+
+/* =========================================
+   SEARCH AND FILTERS
+========================================= */
 
 .my-reports-filters {
   display: grid;
@@ -125,16 +150,27 @@
   color: #89969b;
 }
 
+.my-reports-search:focus-within {
+  border-color: #172C43;
+}
+
 .my-reports-search input {
   width: 100%;
+  min-width: 0;
   border: none;
   outline: none;
   font-family: inherit;
   font-size: 11px;
   color: #172C43;
+  background: transparent;
+}
+
+.my-reports-search input::placeholder {
+  color: #929b9f;
 }
 
 .my-reports-filters select {
+  min-width: 0;
   padding: 10px;
   border: 1px solid #dfe5e2;
   border-radius: 5px;
@@ -144,6 +180,14 @@
   font-size: 11px;
   outline: none;
 }
+
+.my-reports-filters select:focus {
+  border-color: #172C43;
+}
+
+/* =========================================
+   REPORT CARDS
+========================================= */
 
 .my-report-card {
   display: flex;
@@ -165,6 +209,10 @@
   flex: 1;
   min-width: 0;
 }
+
+/* =========================================
+   REPORT BADGES
+========================================= */
 
 .my-report-badges,
 .my-report-modal-badges {
@@ -208,6 +256,10 @@
   color: #4e805d;
 }
 
+/* =========================================
+   REPORT DETAILS
+========================================= */
+
 .my-report-details h3 {
   font-size: 14px;
   margin: 0 0 5px;
@@ -233,6 +285,37 @@
   font-size: 10px;
 }
 
+/* =========================================
+   REPORT ACTION BUTTONS
+========================================= */
+
+.my-report-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 115px;
+  flex-shrink: 0;
+}
+
+.my-report-actions button,
+.my-report-modal-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 12px;
+  border: 1px solid #dce2e5;
+  border-radius: 5px;
+  background: white;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.2s;
+}
+
+/* View Details */
+
 .my-report-view {
   display: flex;
   align-items: center;
@@ -243,9 +326,11 @@
   border: 1px solid #dfe5e2;
   border-radius: 4px;
   color: #172C43;
+  font-family: inherit;
   font-size: 11px;
   cursor: pointer;
   white-space: nowrap;
+  transition: 0.2s;
 }
 
 .my-report-view:hover {
@@ -253,6 +338,32 @@
   border-color: #172C43;
   color: white;
 }
+
+/* Edit Button */
+
+.my-report-edit {
+  color: #19314b;
+  border-color: #cbd7e2 !important;
+}
+
+.my-report-edit:hover {
+  background: #edf3f8;
+}
+
+/* Delete Button */
+
+.my-report-delete {
+  color: #c34b40;
+  border-color: #efcfca !important;
+}
+
+.my-report-delete:hover {
+  background: #fff0ed;
+}
+
+/* =========================================
+   EMPTY REPORTS
+========================================= */
 
 .my-reports-empty {
   text-align: center;
@@ -278,6 +389,14 @@
   cursor: pointer;
 }
 
+.my-reports-empty button:hover {
+  background: #284766;
+}
+
+/* =========================================
+   MODAL OVERLAY
+========================================= */
+
 .my-report-modal-overlay {
   position: fixed;
   inset: 0;
@@ -287,6 +406,10 @@
   place-items: center;
   padding: 20px;
 }
+
+/* =========================================
+   VIEW DETAILS MODAL
+========================================= */
 
 .my-report-modal {
   width: 100%;
@@ -310,7 +433,13 @@
   border: none;
   border-radius: 50%;
   background: white;
+  color: #172C43;
   cursor: pointer;
+  z-index: 2;
+}
+
+.my-report-modal-close:hover {
+  background: #f1f3f3;
 }
 
 .my-report-modal > img {
@@ -349,6 +478,20 @@
   font-size: 11px;
 }
 
+/* Modal Edit and Delete Actions */
+
+.my-report-modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.my-report-modal-actions button {
+  flex: 1;
+}
+
+/* Modal Close Button */
+
 .my-report-modal-done {
   width: 100%;
   padding: 12px;
@@ -356,10 +499,215 @@
   border: none;
   border-radius: 5px;
   color: white;
+  font-family: inherit;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.my-report-modal-done:hover {
+  background: #284766;
+}
+
+/* =========================================
+   EDIT REPORT MODAL
+========================================= */
+
+.my-report-edit-modal {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.18);
+}
+
+.my-report-edit-modal h2 {
+  margin: 0 0 6px;
+  color: #19314b;
+  font-size: 23px;
+}
+
+.my-report-edit-modal > p {
+  margin: 0 0 22px;
+  color: #718096;
+  font-size: 13px;
+}
+
+.my-report-edit-modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.my-report-edit-modal label {
+  margin-top: 7px;
+  color: #19314b;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.my-report-edit-modal input,
+.my-report-edit-modal select,
+.my-report-edit-modal textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 12px;
+  border: 1px solid #dce2e5;
+  border-radius: 5px;
+  background: #fff;
+  color: #19314b;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.my-report-edit-modal input:focus,
+.my-report-edit-modal select:focus,
+.my-report-edit-modal textarea:focus {
+  border-color: #19314b;
+}
+
+.my-report-edit-modal textarea {
+  resize: vertical;
+}
+
+.my-report-edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.my-report-edit-actions button {
+  padding: 11px 17px;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
 }
 
+/* Edit Cancel */
+
+.my-report-cancel {
+  background: #fff;
+  color: #19314b;
+  border: 1px solid #dce2e5;
+}
+
+.my-report-cancel:hover {
+  background: #f3f5f5;
+}
+
+/* Save Changes */
+
+.my-report-save {
+  background: #19314b;
+  color: white;
+  border: 1px solid #19314b;
+}
+
+.my-report-save:hover {
+  background: #284766;
+}
+
+/* =========================================
+   CUSTOM DELETE CONFIRMATION MODAL
+========================================= */
+
+.my-report-delete-modal {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  padding: 35px 30px 28px;
+  background: #ffffff;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.18);
+}
+
+.my-report-delete-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff0ed;
+  color: #c34b40;
+}
+
+.my-report-delete-modal h2 {
+  margin: 0 0 10px;
+  color: #19314b;
+  font-size: 22px;
+}
+
+.my-report-delete-modal p {
+  margin: 0 0 25px;
+  color: #718096;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.my-report-delete-modal p strong {
+  color: #19314b;
+}
+
+/* Delete Confirmation Buttons */
+
+.my-report-delete-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.my-report-delete-actions button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 12px 10px;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.my-report-delete-actions .my-report-cancel {
+  color: #19314b;
+  background: #ffffff;
+  border: 1px solid #dce2e5;
+}
+
+.my-report-delete-actions .my-report-cancel:hover {
+  background: #f3f5f5;
+}
+
+/* Confirm Delete */
+
+.my-report-confirm-delete {
+  color: #ffffff;
+  background: #c34b40;
+  border: 1px solid #c34b40;
+}
+
+.my-report-confirm-delete:hover {
+  background: #a83b32;
+}
+
+/* =========================================
+   RESPONSIVE DESIGN - TABLET
+========================================= */
+
 @media (max-width: 750px) {
+
   .my-reports-filters {
     grid-template-columns: 1fr 1fr;
   }
@@ -372,12 +720,18 @@
     flex-wrap: wrap;
   }
 
-  .my-report-view {
+  .my-report-actions {
     margin-left: auto;
   }
+
 }
 
+/* =========================================
+   RESPONSIVE DESIGN - MOBILE
+========================================= */
+
 @media (max-width: 550px) {
+
   .my-reports-container {
     padding: 30px 14px 50px;
   }
@@ -452,7 +806,59 @@
     gap: 6px;
   }
 
-  .my-report-view {
-    margin-left: auto;
+  /* Stack action buttons neatly on mobile */
+
+  .my-report-actions {
+    width: 100%;
+    margin-left: 0;
+    flex-direction: row;
+    gap: 7px;
   }
+
+  .my-report-actions button {
+    flex: 1;
+    min-width: 0;
+    padding: 9px 5px;
+    font-size: 10px;
+  }
+
+  .my-report-actions button svg {
+    width: 13px;
+    height: 13px;
+  }
+
+}
+
+/* =========================================
+   SMALL MOBILE MODALS
+========================================= */
+
+@media (max-width: 480px) {
+
+  .my-report-modal {
+    padding: 18px;
+  }
+
+  .my-report-modal > img {
+    height: 180px;
+  }
+
+  .my-report-edit-modal {
+    padding: 22px;
+  }
+
+  .my-report-delete-modal {
+    max-width: 95%;
+    padding: 30px 20px 22px;
+  }
+
+  .my-report-delete-actions {
+    gap: 8px;
+  }
+
+  .my-report-delete-actions button {
+    padding: 11px 7px;
+    font-size: 11px;
+  }
+
 }

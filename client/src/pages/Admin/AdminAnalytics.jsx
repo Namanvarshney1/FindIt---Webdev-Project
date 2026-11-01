@@ -1,9 +1,9 @@
 
-import { Link } from "react-router-dom";
 import {
-  LayoutDashboard, Package, ShieldCheck, Users, BarChart3,
-  Settings, LogOut, TrendingUp, TrendingDown, CalendarDays
+  Package, ShieldCheck, Users,
+  TrendingUp, TrendingDown, CalendarDays
 } from "lucide-react";
+import AdminLayout from "../../components/AdminLayout";
 import "../../styles/admin/AdminAnalytics.css";
 
 const monthlyData = [
@@ -37,36 +37,7 @@ const maxMonthlyValue = Math.max(...monthlyData.map(d => d.lost + d.found));
 
 function AdminAnalytics() {
   return (
-    <div className="admin-analytics-layout">
-
-      {/* SIDEBAR */}
-      <aside className="admin-analytics-sidebar">
-        <div className="admin-analytics-brand">Find<span>It.</span></div>
-
-        <div className="admin-analytics-user">
-          <div className="admin-analytics-avatar">A</div>
-          <div>
-            <h3>Administrator</h3>
-            <p>Admin Account</p>
-          </div>
-        </div>
-
-        <div className="admin-analytics-nav-label">MAIN MENU</div>
-
-        <nav className="admin-analytics-nav">
-          <Link to="/admin/dashboard"><LayoutDashboard /> Overview</Link>
-          <Link to="/admin/items"><Package /> Manage Items</Link>
-          <Link to="/admin/claims"><ShieldCheck /> Manage Claims</Link>
-          <Link to="/admin/users"><Users /> Students</Link>
-          <Link to="/admin/analytics" className="active"><BarChart3 /> Analytics</Link>
-          <Link to="/admin/settings"><Settings /> Settings</Link>
-        </nav>
-
-        <Link to="/" className="admin-analytics-logout">
-          <LogOut /> Back to Home
-        </Link>
-      </aside>
-
+    <AdminLayout>
       {/* MAIN CONTENT */}
       <main className="admin-analytics-main">
 
@@ -266,7 +237,7 @@ function AdminAnalytics() {
         </footer>
 
       </main>
-    </div>
+    </AdminLayout>
   );
 }
 

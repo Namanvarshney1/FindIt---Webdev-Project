@@ -1,11 +1,12 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Eye, EyeOff, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, ArrowRight, Package } from "lucide-react";
 import "../../styles/student/Auth.css";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -19,10 +20,13 @@ export default function Register() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setForm((prev) => ({
       ...prev,
       [name]: value
     }));
+
+    setError("");
   };
 
   const handleSubmit = (e) => {
@@ -39,27 +43,38 @@ export default function Register() {
       return;
     }
 
-    setError("Registration UI is ready. Backend integration will be added next.");
+    setError(
+      "Registration UI is ready. Backend integration will be added next."
+    );
   };
 
   return (
     <div className="auth-page">
 
+      {/* NAVBAR */}
       <header className="auth-navbar">
-        <Link to="/" className="logo">
-          find<span>it.</span>
+
+        <Link to="/" className="auth-logo">
+          <Package size={27} />
+          <span>
+            FindIt<span className="auth-logo-dot">.</span>
+          </span>
         </Link>
 
         <Link to="/" className="back-link">
           Back to Home
         </Link>
+
       </header>
 
       <main className="auth-container register-container">
 
+        {/* REGISTRATION FORM */}
         <div className="auth-form-section">
 
-          <span className="eyebrow">JOIN YOUR CAMPUS COMMUNITY</span>
+          <span className="eyebrow">
+            JOIN YOUR CAMPUS COMMUNITY
+          </span>
 
           <h1>Create your account.</h1>
 
@@ -69,8 +84,12 @@ export default function Register() {
 
           <form onSubmit={handleSubmit}>
 
-            <label>Full Name</label>
+            <label htmlFor="register-name">
+              Full Name
+            </label>
+
             <input
+              id="register-name"
               name="name"
               type="text"
               placeholder="Enter your full name"
@@ -79,8 +98,12 @@ export default function Register() {
               required
             />
 
-            <label>College Email</label>
+            <label htmlFor="register-email">
+              College Email
+            </label>
+
             <input
+              id="register-email"
               name="email"
               type="email"
               placeholder="you@college.edu"
@@ -89,8 +112,12 @@ export default function Register() {
               required
             />
 
-            <label>Student ID</label>
+            <label htmlFor="register-student-id">
+              Student ID
+            </label>
+
             <input
+              id="register-student-id"
               name="studentId"
               type="text"
               placeholder="Enter your student ID"
@@ -99,8 +126,12 @@ export default function Register() {
               required
             />
 
-            <label>Department</label>
+            <label htmlFor="register-department">
+              Department
+            </label>
+
             <select
+              id="register-department"
               name="department"
               value={form.department}
               onChange={handleChange}
@@ -114,10 +145,14 @@ export default function Register() {
               <option value="Other">Other</option>
             </select>
 
-            <label>Password</label>
+            <label htmlFor="register-password">
+              Password
+            </label>
 
             <div className="password-field">
+
               <input
+                id="register-password"
                 name="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Minimum 8 characters"
@@ -129,14 +164,25 @@ export default function Register() {
               <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
-                aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-label={
+                  showPassword ? "Hide password" : "Show password"
+                }
               >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                {showPassword ? (
+                  <EyeOff size={18} />
+                ) : (
+                  <Eye size={18} />
+                )}
               </button>
+
             </div>
 
-            <label>Confirm Password</label>
+            <label htmlFor="register-confirm-password">
+              Confirm Password
+            </label>
+
             <input
+              id="register-confirm-password"
               name="confirmPassword"
               type="password"
               placeholder="Re-enter your password"
@@ -145,10 +191,16 @@ export default function Register() {
               required
             />
 
-            {error && <p className="auth-message">{error}</p>}
+            {/* VALIDATION MESSAGE */}
+            {error && (
+              <p className="auth-message error" role="alert">
+                {error}
+              </p>
+            )}
 
             <button type="submit" className="auth-submit">
-              Create Account <ArrowRight size={17} />
+              Create Account
+              <ArrowRight size={17} />
             </button>
 
           </form>
@@ -160,10 +212,14 @@ export default function Register() {
 
         </div>
 
+        {/* RIGHT SIDE PANEL */}
         <div className="auth-side">
 
           <div>
-            <span className="eyebrow">WELCOME TO FINDIT</span>
+
+            <span className="eyebrow">
+              WELCOME TO FINDIT
+            </span>
 
             <h2>
               Your campus.
@@ -177,6 +233,7 @@ export default function Register() {
               Be part of a community that helps students
               find what they've lost.
             </p>
+
           </div>
 
           <span className="auth-side-footer">

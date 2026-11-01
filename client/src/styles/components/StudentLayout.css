@@ -1,206 +1,303 @@
+
+/* =========================================
+   STUDENT LAYOUT
+========================================= */
+
 .student-layout {
-  min-height: 100vh;
   display: flex;
+  min-height: 100vh;
+  width: 100%;
   background: #f7f7f4;
-  color: #202b3c;
-  font-family: "Inter", sans-serif;
+  color: #203b5c;
 }
+
+/* =========================================
+   SIDEBAR
+========================================= */
 
 .student-sidebar {
   width: 250px;
-  background: #fff;
-  border-right: 1px solid #e8e8e3;
-  padding: 28px 18px;
+  min-width: 250px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: #ffffff;
+  border-right: 1px solid #e5e5e2;
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;
-  position: sticky;
-  top: 0;
-  height: 100vh;
+  padding: 24px 18px;
   box-sizing: border-box;
+  transition: transform 0.3s ease;
 }
 
 .student-sidebar-top {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin: 0 0 35px 10px;
+  align-items: center;
+  margin-bottom: 34px;
 }
 
 .student-brand {
+  color: #203b5c;
   font-size: 27px;
-  font-weight: 800;
-  color: #182b49;
+  font-weight: 750;
   text-decoration: none;
+  letter-spacing: -1px;
 }
 
-.student-brand span {
-  color: #c87558;
+.student-brand span,
+.student-mobile-brand span {
+  color: #d17b66;
 }
 
 .student-sidebar-close {
   display: none;
-  background: none;
+  background: transparent;
   border: none;
-  color: #657080;
+  color: #203b5c;
   cursor: pointer;
-  padding: 4px;
 }
+
+/* =========================================
+   STUDENT USER PROFILE
+========================================= */
 
 .student-user {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 0 8px 25px;
-  border-bottom: 1px solid #eee;
+  padding: 0 5px 24px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid #e9e9e7;
+  min-width: 0;
 }
 
 .student-avatar {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  background: #e9eef5;
+  color: #203b5c;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  background: #e9edf3;
-  color: #263d5c;
+  font-size: 16px;
   font-weight: 700;
-  width: 43px;
-  height: 43px;
-  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.student-avatar img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.student-user-details {
+  min-width: 0;
+  overflow: hidden;
 }
 
 .student-user h3 {
   font-size: 14px;
+  font-weight: 650;
+  color: #203b5c;
   margin: 0 0 5px;
-  color: #182b49;
-  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .student-user p {
   font-size: 12px;
-  color: #858b95;
+  color: #8492a6;
   margin: 0;
 }
+
+/* =========================================
+   NAVIGATION
+========================================= */
 
 .student-nav {
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  margin-top: 25px;
+  gap: 5px;
+  width: 100%;
 }
 
-.student-nav a,
+.student-nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 43px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  border-radius: 7px;
+  color: #536a85;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.student-nav a svg {
+  flex-shrink: 0;
+  color: #72839a;
+}
+
+.student-nav a:hover {
+  background: #f4f6f9;
+  color: #203b5c;
+}
+
+.student-nav a.active {
+  background: #eaf0f6;
+  color: #203b5c;
+  font-weight: 650;
+}
+
+.student-nav a.active svg {
+  color: #203b5c;
+}
+
+/* =========================================
+   BACK TO HOME
+========================================= */
+
 .student-logout {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px;
-  border-radius: 7px;
-  color: #657080;
+  margin-top: auto;
+  padding: 12px 12px;
+  color: #536a85;
   text-decoration: none;
   font-size: 14px;
-  transition: 0.2s;
   font-weight: 500;
-}
-
-.student-nav a:hover,
-.student-nav a.active {
-  background: #edf1f6;
-  color: #203b60;
-  font-weight: 600;
-}
-
-.student-nav svg,
-.student-logout svg {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-}
-
-.student-logout {
-  margin-top: auto;
+  border-radius: 7px;
+  transition: background 0.2s ease;
 }
 
 .student-logout:hover {
-  background: #edf1f6;
-  color: #203b60;
+  background: #f4f6f9;
+  color: #203b5c;
 }
+
+/* =========================================
+   MAIN CONTENT
+========================================= */
 
 .student-content-area {
   flex: 1;
   min-width: 0;
-  display: flex;
-  flex-direction: column;
+  min-height: 100vh;
+  margin-left: 250px;
+  background: #f7f7f4;
 }
+
+/* =========================================
+   MOBILE HEADER
+========================================= */
 
 .student-mobile-header {
   display: none;
+  height: 55px;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e5e2;
+  position: sticky;
+  top: 0;
+  z-index: 900;
 }
 
-/* Mobile responsive */
+.student-mobile-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: #203b5c;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.student-mobile-brand {
+  color: #203b5c;
+  text-decoration: none;
+  font-size: 22px;
+  font-weight: 750;
+  letter-spacing: -1px;
+}
+
+/* =========================================
+   MOBILE SIDEBAR OVERLAY
+========================================= */
+
+.student-sidebar-overlay {
+  display: none;
+}
+
+/* =========================================
+   RESPONSIVE DESIGN
+========================================= */
+
 @media (max-width: 768px) {
   .student-layout {
-    flex-direction: column;
+    display: block;
   }
 
   .student-mobile-header {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 20px;
-    background: #fff;
-    border-bottom: 1px solid #e8e8e3;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .student-mobile-toggle {
-    background: none;
-    border: none;
-    color: #182b49;
-    cursor: pointer;
-    padding: 4px;
-    display: flex;
-    align-items: center;
-  }
-
-  .student-mobile-brand {
-    font-size: 22px;
-    font-weight: 800;
-    color: #182b49;
-    text-decoration: none;
-  }
-
-  .student-mobile-brand span {
-    color: #c87558;
   }
 
   .student-sidebar {
-    position: fixed;
-    top: 0;
-    left: -280px;
-    bottom: 0;
-    width: 260px;
-    height: 100vh;
-    z-index: 1001;
-    transition: left 0.25s ease;
-    box-shadow: none;
+    width: 270px;
+    min-width: 270px;
+    transform: translateX(-100%);
+    z-index: 1200;
   }
 
   .student-sidebar.open {
-    left: 0;
-    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+    transform: translateX(0);
   }
 
   .student-sidebar-close {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .student-sidebar-overlay {
+    display: block;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
-    z-index: 1000;
+    background: rgba(20, 35, 52, 0.4);
+    z-index: 1100;
+  }
+
+  .student-content-area {
+    margin-left: 0;
+    min-height: calc(100vh - 55px);
+    width: 100%;
   }
 }
 
+@media (max-width: 400px) {
+  .student-sidebar {
+    width: 260px;
+    min-width: 260px;
+  }
+
+  .student-mobile-header {
+    padding: 0 12px;
+  }
+}

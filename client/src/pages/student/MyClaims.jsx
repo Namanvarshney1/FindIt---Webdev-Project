@@ -10,8 +10,10 @@ import {
   MessageSquare,
   CheckCircle,
   Clock,
-  AlertCircle
+  AlertCircle,
+  Trash2
 } from "lucide-react";
+
 import StudentLayout from "../../components/StudentLayout";
 
 import wallet from "../../assets/wallet.jpg";
@@ -20,7 +22,7 @@ import smartwatch from "../../assets/smartwatch.jpg";
 
 import "../../styles/student/MyClaims.css";
 
-const claims = [
+const initialClaims = [
   {
     id: 1,
     item: "Black Leather Wallet",
@@ -59,10 +61,6 @@ const claims = [
   }
 ];
 
-const pendingClaimsCount = claims.filter((c) => c.status === "Pending").length;
-const approvedClaimsCount = claims.filter((c) => c.status === "Approved").length;
-const rejectedClaimsCount = claims.filter((c) => c.status === "Rejected").length;
-
 function formatDate(date) {
   return new Date(`${date}T00:00:00`).toLocaleDateString("en-IN", {
     day: "numeric",
@@ -78,209 +76,405 @@ function getStatusIcon(status) {
 }
 
 export default function MyClaims() {
+  const [claims, setClaims] = useState(initialClaims);
+
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
+
   const [selectedClaim, setSelectedClaim] = useState(null);
+  const [withdrawConfirmation, setWithdrawConfirmation] = useState(null);
+
+  const pendingClaimsCount = claims.filter(
+    (claim) => claim.status === "Pending"
+  ).length;
+
+  const approvedClaimsCount = claims.filter(
+    (claim) => claim.status === "Approved"
+  ).length;
+
+  const rejectedClaimsCount = claims.filter(
+    (claim) => claim.status === "Rejected"
+  ).length;
 
   const filteredClaims = useMemo(() => {
     return claims.filter((claim) => {
+      const searchTerm = search.trim().toLowerCase();
+
       const matchesSearch =
-        claim.item.toLowerCase().includes(search.toLowerCase()) ||
-        claim.location.toLowerCase().includes(search.toLowerCase());
+        claim.item.toLowerCase().includes(searchTerm) ||
+        claim.location.toLowerCase().includes(searchTerm) ||
+        claim.category.toLowerCase().includes(searchTerm) ||
+        claim.description.toLowerCase().includes(searchTerm) ||
+        claim.message.toLowerCase().includes(searchTerm) ||
+        claim.status.toLowerCase().includes(searchTerm);
 
       const matchesStatus =
         statusFilter === "All" || claim.status === statusFilter;
 
       return matchesSearch && matchesStatus;
     });
-  }, [search, statusFilter]);
+  }, [claims, search, statusFilter]);
+
+  // Open withdrawal confirmation
+  const handleWithdraw = (claim) => {
+    setSelectedClaim(null);
+    setWithdrawConfirmation(claim);
+  };
+
+  // Confirm withdrawal
+  const confirmWithdraw = () => {
+    if (!withdrawConfirmation) return;
+
+    setClaims((previousClaims) =>
+      previousClaims.filter(
+        (claim) => claim.id !== withdrawConfirmation.id
+      )
+    );
+
+    setSelectedClaim(null);
+    setWithdrawConfirmation(null);
+  };
 
   return (
     <StudentLayout>
       <div className="my-claims-page">
+
         <main className="my-claims-container">
 
-        <div className="my-claims-heading">
-          <span>YOUR REQUESTS</span>
-          <h1>My Claims</h1>
-          <p>
-            Track the items you have claimed and check their latest status.
-          </p>
-        </div>
-
-        <section className="claims-summary">
-          <div>
-            <MessageSquare size={21} />
-            <span>Total Claims</span>
-            <strong>{claims.length}</strong>
+          {/* Page Heading */}
+          <div className="my-claims-heading">
+            <span>YOUR REQUESTS</span>
+            <h1>My Claims</h1>
+            <p>
+              Track the items you have claimed and check their latest status.
+            </p>
           </div>
 
-          <div>
-            <Clock size={21} />
-            <span>Pending</span>
-            <strong>{pendingClaimsCount}</strong>
-          </div>
+          {/* Summary Cards */}
+          <section className="claims-summary">
 
-          <div>
-            <CheckCircle size={21} />
-            <span>Approved</span>
-            <strong>{approvedClaimsCount}</strong>
-          </div>
-
-          <div>
-            <AlertCircle size={21} />
-            <span>Rejected</span>
-            <strong>{rejectedClaimsCount}</strong>
-          </div>
-        </section>
-
-        <section className="claims-panel">
-
-          <div className="claims-panel-heading">
             <div>
-              <h2>Your Submitted Claims</h2>
-              <p>Review your claim requests and their status.</p>
-            </div>
-          </div>
-
-          <div className="claims-filters">
-            <div className="claims-search">
-              <Search size={18} />
-              <input
-                type="text"
-                placeholder="Search by item or location..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
+              <MessageSquare size={21} />
+              <span>Total Claims</span>
+              <strong>{claims.length}</strong>
             </div>
 
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              aria-label="Filter claims by status"
-            >
-              <option value="All">All Statuses</option>
-              <option value="Pending">Pending</option>
-              <option value="Approved">Approved</option>
-              <option value="Rejected">Rejected</option>
-            </select>
-          </div>
+            <div>
+              <Clock size={21} />
+              <span>Pending</span>
+              <strong>{pendingClaimsCount}</strong>
+            </div>
 
-          <div className="claims-list">
-            {filteredClaims.length > 0 ? (
-              filteredClaims.map((claim) => (
-                <article className="claim-card" key={claim.id}>
-                  <img src={claim.image} alt={claim.item} />
+            <div>
+              <CheckCircle size={21} />
+              <span>Approved</span>
+              <strong>{approvedClaimsCount}</strong>
+            </div>
 
-                  <div className="claim-details">
-                    <span className={`claim-status ${claim.status.toLowerCase()}`}>
-                      {getStatusIcon(claim.status)}
-                      {claim.status}
-                    </span>
+            <div>
+              <AlertCircle size={21} />
+              <span>Rejected</span>
+              <strong>{rejectedClaimsCount}</strong>
+            </div>
 
-                    <h3>{claim.item}</h3>
-                    <span className="claim-category">{claim.category}</span>
+          </section>
 
-                    <div className="claim-meta">
-                      <span>
-                        <MapPin size={14} /> {claim.location}
+          {/* Claims Panel */}
+          <section className="claims-panel">
+
+            <div className="claims-panel-heading">
+              <div>
+                <h2>Your Submitted Claims</h2>
+                <p>Review your claim requests and their status.</p>
+              </div>
+            </div>
+
+            {/* Search and Filter */}
+            <div className="claims-filters">
+
+              <div className="claims-search">
+                <Search size={18} />
+
+                <input
+                  type="text"
+                  placeholder="Search item, location, status..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </div>
+
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                aria-label="Filter claims by status"
+              >
+                <option value="All">All Statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+
+            </div>
+
+            {/* Claims List */}
+            <div className="claims-list">
+
+              {filteredClaims.length > 0 ? (
+
+                filteredClaims.map((claim) => (
+
+                  <article className="claim-card" key={claim.id}>
+
+                    <img src={claim.image} alt={claim.item} />
+
+                    <div className="claim-details">
+
+                      <span className={`claim-status ${claim.status.toLowerCase()}`}>
+                        {getStatusIcon(claim.status)}
+                        {claim.status}
                       </span>
-                      <span>
-                        <CalendarDays size={14} /> Claimed: {formatDate(claim.claimDate)}
+
+                      <h3>{claim.item}</h3>
+
+                      <span className="claim-category">
+                        {claim.category}
                       </span>
+
+                      <div className="claim-meta">
+
+                        <span>
+                          <MapPin size={14} />
+                          {claim.location}
+                        </span>
+
+                        <span>
+                          <CalendarDays size={14} />
+                          Claimed: {formatDate(claim.claimDate)}
+                        </span>
+
+                      </div>
+
                     </div>
-                  </div>
+
+                    <div className="claim-actions">
+
+                      <button
+                        type="button"
+                        className="claim-view-btn"
+                        onClick={() => setSelectedClaim(claim)}
+                      >
+                        <Eye size={16} />
+                        View Details
+                      </button>
+
+                      {claim.status === "Pending" && (
+                        <button
+                          type="button"
+                          className="claim-withdraw-btn"
+                          onClick={() => handleWithdraw(claim)}
+                        >
+                          <Trash2 size={15} />
+                          Withdraw
+                        </button>
+                      )}
+
+                    </div>
+
+                  </article>
+
+                ))
+
+              ) : (
+
+                <div className="claims-empty">
+
+                  <MessageSquare size={38} />
+
+                  <h3>No claims found</h3>
+
+                  <p>Try changing your search or status filter.</p>
 
                   <button
                     type="button"
-                    className="claim-view-btn"
-                    onClick={() => setSelectedClaim(claim)}
+                    onClick={() => {
+                      setSearch("");
+                      setStatusFilter("All");
+                    }}
                   >
-                    <Eye size={16} /> View Details
+                    Clear Filters
                   </button>
-                </article>
-              ))
-            ) : (
-              <div className="claims-empty">
-                <MessageSquare size={38} />
-                <h3>No claims found</h3>
-                <p>Try changing your search or status filter.</p>
+
+                </div>
+
+              )}
+
+            </div>
+
+          </section>
+
+          {/* Information Note */}
+          <div className="claims-note">
+            <AlertCircle size={17} />
+            <p>
+              Claim status is updated by the administrator after reviewing
+              your request. You can withdraw a claim while it is pending.
+            </p>
+          </div>
+
+        </main>
+
+        {/* View Details Modal */}
+        {selectedClaim && (
+
+          <div
+            className="claim-modal-overlay"
+            onClick={() => setSelectedClaim(null)}
+          >
+
+            <div
+              className="claim-modal"
+              onClick={(e) => e.stopPropagation()}
+            >
+
+              <button
+                type="button"
+                className="claim-modal-close"
+                onClick={() => setSelectedClaim(null)}
+                aria-label="Close details"
+              >
+                <X size={20} />
+              </button>
+
+              <img
+                src={selectedClaim.image}
+                alt={selectedClaim.item}
+              />
+
+              <span className={`claim-status ${selectedClaim.status.toLowerCase()}`}>
+                {getStatusIcon(selectedClaim.status)}
+                {selectedClaim.status}
+              </span>
+
+              <h2>{selectedClaim.item}</h2>
+
+              <p className="claim-modal-description">
+                {selectedClaim.description}
+              </p>
+
+              <div className="claim-modal-info">
+
+                <span>
+                  <MapPin size={16} />
+                  {selectedClaim.location}
+                </span>
+
+                <span>
+                  <CalendarDays size={16} />
+                  Item reported: {formatDate(selectedClaim.date)}
+                </span>
+
+                <span>
+                  <CalendarDays size={16} />
+                  Claim submitted: {formatDate(selectedClaim.claimDate)}
+                </span>
+
+                <span>
+                  <Package size={16} />
+                  {selectedClaim.category}
+                </span>
+
+              </div>
+
+              <div className="claim-message">
+                <strong>Your claim message</strong>
+                <p>{selectedClaim.message}</p>
+              </div>
+
+              {selectedClaim.status === "Pending" && (
                 <button
                   type="button"
-                  onClick={() => {
-                    setSearch("");
-                    setStatusFilter("All");
-                  }}
+                  className="claim-withdraw-btn claim-modal-withdraw"
+                  onClick={() => handleWithdraw(selectedClaim)}
                 >
-                  Clear Filters
+                  <Trash2 size={16} />
+                  Withdraw Claim
                 </button>
-              </div>
-            )}
+              )}
+
+              <button
+                type="button"
+                className="claim-modal-done"
+                onClick={() => setSelectedClaim(null)}
+              >
+                Close
+              </button>
+
+            </div>
+
           </div>
-        </section>
 
-        <div className="claims-note">
-          <AlertCircle size={17} />
-          <p>
-            Claim status is updated by the administrator after reviewing
-            your request.
-          </p>
-        </div>
+        )}
 
-      </main>
+        {/* Withdraw Confirmation Modal */}
+        {withdrawConfirmation && (
 
-      {selectedClaim && (
-        <div
-          className="claim-modal-overlay"
-          onClick={() => setSelectedClaim(null)}
-        >
           <div
-            className="claim-modal"
-            onClick={(e) => e.stopPropagation()}
+            className="claim-modal-overlay"
+            onClick={() => setWithdrawConfirmation(null)}
           >
-            <button
-              type="button"
-              className="claim-modal-close"
-              onClick={() => setSelectedClaim(null)}
-              aria-label="Close details"
+
+            <div
+              className="claim-withdraw-modal"
+              onClick={(e) => e.stopPropagation()}
             >
-              <X size={20} />
-            </button>
 
-            <img src={selectedClaim.image} alt={selectedClaim.item} />
+              <button
+                type="button"
+                className="claim-modal-close"
+                onClick={() => setWithdrawConfirmation(null)}
+                aria-label="Close confirmation"
+              >
+                <X size={20} />
+              </button>
 
-            <span className={`claim-status ${selectedClaim.status.toLowerCase()}`}>
-              {getStatusIcon(selectedClaim.status)}
-              {selectedClaim.status}
-            </span>
+              <div className="claim-withdraw-icon">
+                <Trash2 size={25} />
+              </div>
 
-            <h2>{selectedClaim.item}</h2>
-            <p className="claim-modal-description">
-              {selectedClaim.description}
-            </p>
+              <h2>Withdraw Claim?</h2>
 
-            <div className="claim-modal-info">
-              <span><MapPin size={16} /> {selectedClaim.location}</span>
-              <span><CalendarDays size={16} /> Item reported: {formatDate(selectedClaim.date)}</span>
-              <span><CalendarDays size={16} /> Claim submitted: {formatDate(selectedClaim.claimDate)}</span>
-              <span><Package size={16} /> {selectedClaim.category}</span>
+              <p>
+                Are you sure you want to withdraw your claim for
+                <strong> "{withdrawConfirmation.item}"</strong>?
+                This action cannot be undone.
+              </p>
+
+              <div className="claim-withdraw-actions">
+
+                <button
+                  type="button"
+                  className="claim-cancel-btn"
+                  onClick={() => setWithdrawConfirmation(null)}
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="button"
+                  className="claim-confirm-btn"
+                  onClick={confirmWithdraw}
+                >
+                  <Trash2 size={16} />
+                  Withdraw Claim
+                </button>
+
+              </div>
+
             </div>
 
-            <div className="claim-message">
-              <strong>Your claim message</strong>
-              <p>{selectedClaim.message}</p>
-            </div>
-
-            <button
-              type="button"
-              className="claim-modal-done"
-              onClick={() => setSelectedClaim(null)}
-            >
-              Close
-            </button>
           </div>
-        </div>
-      )}
+
+        )}
 
       </div>
     </StudentLayout>

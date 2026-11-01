@@ -1,20 +1,13 @@
 
 import { useState, useMemo } from "react";
-import { Link } from "react-router-dom";
 import {
-  LayoutDashboard,
-  Package,
-  ShieldCheck,
-  Users,
-  BarChart3,
-  Settings,
-  LogOut,
   Search,
   Eye,
   UserCheck,
   UserX,
   X
 } from "lucide-react";
+import AdminLayout from "../../components/AdminLayout";
 
 import "../../styles/admin/AdminUsers.css";
 
@@ -137,60 +130,7 @@ function AdminUsers() {
   }, [students, search, statusFilter]);
 
   return (
-    <div className="admin-users-layout">
-
-      {/* SIDEBAR */}
-      <aside className="admin-users-sidebar">
-
-        <div className="admin-users-brand">
-          Find<span>It.</span>
-        </div>
-
-        <div className="admin-users-user">
-          <div className="admin-users-avatar">A</div>
-
-          <div>
-            <h3>Administrator</h3>
-            <p>Admin Account</p>
-          </div>
-        </div>
-
-        <div className="admin-users-nav-label">
-          MAIN MENU
-        </div>
-
-        <nav className="admin-users-nav">
-          <Link to="/admin/dashboard">
-            <LayoutDashboard /> Overview
-          </Link>
-
-          <Link to="/admin/items">
-            <Package /> Manage Items
-          </Link>
-
-          <Link to="/admin/claims">
-            <ShieldCheck /> Manage Claims
-          </Link>
-
-          <Link to="/admin/users" className="active">
-            <Users /> Students
-          </Link>
-
-          <Link to="/admin/analytics">
-            <BarChart3 /> Analytics
-          </Link>
-
-          <Link to="/admin/settings">
-            <Settings /> Settings
-          </Link>
-        </nav>
-
-        <Link to="/" className="admin-users-logout">
-          <LogOut /> Back to Home
-        </Link>
-
-      </aside>
-
+    <AdminLayout>
       {/* MAIN CONTENT */}
       <main className="admin-users-main">
 
@@ -501,7 +441,7 @@ function AdminUsers() {
 
       </main>
 
-    </div>
+    </AdminLayout>
   );
 }
 

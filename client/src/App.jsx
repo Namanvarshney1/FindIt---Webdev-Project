@@ -1,6 +1,6 @@
 
 import { useState, useMemo } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import {
   Search,
   MapPin,
@@ -30,11 +30,13 @@ import AdminUsers from "./pages/Admin/AdminUsers";
 import AdminClaims from "./pages/Admin/AdminClaims";
 import AdminItems from "./pages/Admin/AdminItems";
 import Settings from "./pages/student/Settings";
+import AdminProfile from "./pages/admin/AdminProfile";
 import AdminAnalytics from "./pages/Admin/AdminAnalytics";
 import AdminSettings from "./pages/Admin/AdminSettings";
 import ForgotPassword from "./pages/student/ForgotPassword";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminLogin from "./pages/Admin/AdminLogin";
+import NotFound from "./pages/NotFound";
 import MyReports from "./pages/student/MyReports";
 
 import "./styles/App.css";
@@ -90,19 +92,22 @@ function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState("All Items");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredItems = useMemo(() => {
-    return items.filter((item) => {
-      const matchesCategory =
-        selectedCategory === "All Items" ||
-        item.category === selectedCategory;
+const filteredItems = useMemo(() => {
+  return items.filter((item) => {
+    const search = searchTerm.trim().toLowerCase();
 
-      const matchesSearch =
-        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.location.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "All Items" ||
+      item.category === selectedCategory;
 
-      return matchesCategory && matchesSearch;
-    });
-  }, [selectedCategory, searchTerm]);
+    const matchesSearch =
+      item.name.toLowerCase().includes(search) ||
+      item.location.toLowerCase().includes(search) ||
+      item.category.toLowerCase().includes(search);
+
+    return matchesCategory && matchesSearch;
+  });
+}, [selectedCategory, searchTerm]);
 
   return (
     <div className="app">
@@ -110,24 +115,25 @@ function HomePage() {
       {/* NAVBAR */}
       <nav className="navbar">
         <div className="nav-container">
-          <a href="/" className="logo">
+          <Link to="/" className="logo">
             <Package size={25} />
             FindIt<span>.</span>
-          </a>
+          </Link>
 
           <div className="nav-links">
-            <a href="/">Home</a>
+            <Link to="/">Home</Link>
             <a href="#browse">Browse Items</a>
             <a href="#how-it-works">How It Works</a>
           </div>
 
           <div className="nav-actions">
-            <a href="/login" className="login-link">
+            <Link to="/login" className="login-link">
               Login
-            </a>
-            <a href="/register" className="register-btn">
+            </Link>
+
+            <Link to="/register" className="register-btn">
               Get Started
-            </a>
+            </Link>
           </div>
         </div>
       </nav>
@@ -151,9 +157,9 @@ function HomePage() {
           </p>
 
           <div className="hero-actions">
-            <a href="/login" className="primary-btn">
+            <Link to="/login" className="primary-btn">
               Report an Item <ArrowRight size={17} />
-            </a>
+            </Link>
 
             <a href="#browse" className="secondary-btn">
               Browse Items
@@ -240,9 +246,10 @@ function HomePage() {
 
                   <div className="item-footer">
                     <span>{item.date}</span>
-                    <a href="/login">
+
+                    <Link to="/login">
                       View Details <ArrowRight size={14} />
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -334,6 +341,8 @@ function App() {
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/claims" element={<AdminClaims />} />
         <Route path="/browse" element={<Browse />} />
+        <Route path="*" element={<NotFound />} />
+        <Route path="/admin/profile" element={<AdminProfile />} />
         <Route path="/admin/settings" element={<AdminSettings />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/admin/analytics" element={<AdminAnalytics />} />
