@@ -1,8 +1,4 @@
 node_modules/
-<<<<<<< HEAD
-.env
-=======
 .env
 uploads/*
 !uploads/.gitkeep
->>>>>>> 56080fe (Add backend server implementation)
